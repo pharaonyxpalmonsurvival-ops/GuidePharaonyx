@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharaonyx Bot — Documentation Officielle</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:       #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dim:   #8B6914;
+  --bg:         #0A0806;
+  --bg2:        #110E09;
+  --bg3:        #1A1510;
+  --bg4:        #221C14;
+  --surface:    #2A2218;
+  --border:     rgba(201,168,76,0.18);
+  --border2:    rgba(201,168,76,0.35);
+  --text:       #E8DFC8;
+  --text-dim:   #A09070;
+  --text-muted: #6B5A3E;
+  --red:        #C0392B;
+  --orange:     #D4622A;
+  --green:      #2E7D52;
+  --blue:       #2C5F8A;
+  --purple:     #6B3FA0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Noise overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+/* ══════════════════════════════════════════════
+   SIDEBAR NAV
+══════════════════════════════════════════════ */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 260px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 100;
+  padding: 0 0 2rem;
+}
+
+.sidebar-logo {
+  padding: 2rem 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.sidebar-logo .emblem {
+  font-size: 2.5rem; display: block; margin-bottom: .5rem;
+  filter: drop-shadow(0 0 12px rgba(201,168,76,.5));
+}
+
+.sidebar-logo h2 {
+  font-family: 'Cinzel', serif;
+  font-size: .85rem; font-weight: 600;
+  color: var(--gold); letter-spacing: .15em; text-transform: uppercase;
+}
+
+.sidebar-logo p { font-size: .75rem; color: var(--text-muted); margin-top: .2rem; }
+
+.nav-section { padding: 1.2rem 1rem .4rem; }
+.nav-section-label {
+  font-family: 'Cinzel', serif; font-size: .65rem; font-weight: 700;
+  color: var(--gold-dim); letter-spacing: .2em; text-transform: uppercase;
+  padding: 0 .5rem; margin-bottom: .4rem;
+}
+
+.nav-link {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .45rem .75rem; border-radius: 6px;
+  color: var(--text-dim); text-decoration: none;
+  font-size: .9rem; font-family: 'Crimson Pro', serif;
+  transition: all .2s; cursor: pointer; border: none;
+  background: none; width: 100%; text-align: left;
+}
+.nav-link:hover { color: var(--gold-light); background: rgba(201,168,76,.08); }
+.nav-link.active { color: var(--gold); background: rgba(201,168,76,.12); }
+.nav-link .icon { font-size: 1rem; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════════ */
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative; overflow: hidden;
+  padding: 6rem 4rem 5rem;
+  background: linear-gradient(135deg, var(--bg) 0%, #1A1200 50%, var(--bg) 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero::before {
+  content: '𓂀';
+  position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+  font-size: 14rem; opacity: .04; pointer-events: none;
+  filter: blur(1px);
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  border-radius: 20px; padding: .35rem 1rem;
+  font-family: 'JetBrains Mono', monospace; font-size: .75rem;
+  color: var(--gold); margin-bottom: 1.5rem;
+  letter-spacing: .05em;
+}
+
+.hero h1 {
+  font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 900;
+  line-height: 1.1; color: var(--gold-light);
+  text-shadow: 0 0 40px rgba(201,168,76,.3);
+  margin-bottom: .75rem;
+}
+
+.hero h1 span { color: var(--text-dim); font-weight: 400; }
+
+.hero-desc {
+  font-size: 1.15rem; color: var(--text-dim); max-width: 580px;
+  margin-bottom: 2rem; font-style: italic;
+}
+
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex; flex-direction: column;
+}
+.meta-item .label { font-size: .72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; font-family: 'Cinzel', serif; }
+.meta-item .value { font-family: 'JetBrains Mono', monospace; font-size: .9rem; color: var(--gold); }
+
+/* ── Sections ── */
+.section {
+  padding: 4rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section:last-child { border-bottom: none; }
+
+.section-header { margin-bottom: 2.5rem; }
+
+.section-number {
+  font-family: 'JetBrains Mono', monospace; font-size: .7rem;
+  color: var(--gold-dim); letter-spacing: .2em;
+  display: block; margin-bottom: .4rem;
+}
+
+.section h2 {
+  font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 700;
+  color: var(--gold-light);
+  border-left: 3px solid var(--gold);
+  padding-left: 1rem;
+}
+
+.section h3 {
+  font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 600;
+  color: var(--gold); margin: 2rem 0 .8rem;
+}
+
+.section h4 {
+  font-family: 'Cinzel', serif; font-size: .9rem; font-weight: 600;
+  color: var(--text); margin: 1.5rem 0 .5rem;
+  text-transform: uppercase; letter-spacing: .1em;
+}
+
+p { margin-bottom: .8rem; color: var(--text-dim); }
+p strong { color: var(--text); font-weight: 500; }
+
+/* ── Cards grid ── */
+.cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+
+.card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem;
+  transition: border-color .2s, transform .2s;
+}
+.card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.card-icon { font-size: 1.5rem; margin-bottom: .6rem; }
+.card-title {
+  font-family: 'Cinzel', serif; font-size: .85rem; font-weight: 600;
+  color: var(--gold); margin-bottom: .4rem; text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.card-desc { font-size: .88rem; color: var(--text-dim); line-height: 1.5; }
+
+/* ── Commands table ── */
+.cmd-group { margin-bottom: 2.5rem; }
+
+.cmd-group-title {
+  font-family: 'Cinzel', serif; font-size: .75rem; font-weight: 700;
+  color: var(--gold-dim); text-transform: uppercase; letter-spacing: .2em;
+  margin-bottom: .75rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cmd-table { width: 100%; border-collapse: collapse; }
+.cmd-table tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+.cmd-table tr:hover { background: rgba(201,168,76,.04); }
+.cmd-table tr:last-child { border-bottom: none; }
+.cmd-table td { padding: .7rem .5rem; vertical-align: top; }
+
+.cmd-name {
+  font-family: 'JetBrains Mono', monospace; font-size: .82rem;
+  color: var(--gold); white-space: nowrap; padding-right: 1rem;
+  min-width: 220px;
+}
+
+.cmd-desc { font-size: .9rem; color: var(--text-dim); }
+
+.cmd-perm {
+  font-family: 'JetBrains Mono', monospace; font-size: .68rem;
+  white-space: nowrap; text-align: right;
+}
+
+/* Permission badges */
+.perm {
+  display: inline-block; padding: .15rem .5rem; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: .68rem;
+}
+.perm-all   { background: rgba(46,125,82,.25); color: #5DBF8A; border: 1px solid rgba(46,125,82,.4); }
+.perm-r4    { background: rgba(201,168,76,.15); color: var(--gold); border: 1px solid var(--border2); }
+.perm-super { background: rgba(107,63,160,.25); color: #B794D4; border: 1px solid rgba(107,63,160,.4); }
+
+/* ── Code blocks ── */
+pre, code {
+  font-family: 'JetBrains Mono', monospace; font-size: .82rem;
+}
+
+pre {
+  background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.25rem 1.5rem;
+  overflow-x: auto; margin: 1rem 0; color: var(--text);
+  position: relative;
+}
+
+pre .comment { color: var(--text-muted); font-style: italic; }
+pre .key     { color: var(--gold); }
+pre .val     { color: #85C9A0; }
+pre .str     { color: #C9A07A; }
+
+code {
+  background: rgba(201,168,76,.1); color: var(--gold-light);
+  padding: .1rem .35rem; border-radius: 4px; font-size: .82rem;
+}
+
+/* ── Flow ── */
+.flow {
+  display: flex; align-items: center; flex-wrap: wrap; gap: .5rem;
+  margin: 1rem 0; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1rem 1.25rem;
+}
+
+.flow-step {
+  display: flex; align-items: center; gap: .5rem;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 6px; padding: .35rem .75rem;
+  font-size: .85rem; color: var(--text);
+}
+
+.flow-step .num {
+  background: var(--gold); color: var(--bg); width: 18px; height: 18px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif; font-size: .65rem; font-weight: 700; flex-shrink: 0;
+}
+
+.flow-arrow { color: var(--gold-dim); font-size: .9rem; }
+
+/* ── Alert / callout ── */
+.callout {
+  background: var(--bg3); border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0; padding: 1rem 1.25rem;
+  margin: 1rem 0; font-size: .92rem; color: var(--text-dim);
+}
+.callout.warn { border-color: var(--orange); }
+.callout.info { border-color: var(--blue); }
+
+.callout strong { color: var(--gold); display: block; margin-bottom: .25rem; font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+.callout.warn strong { color: #E8924A; }
+.callout.info strong { color: #6AABD4; }
+
+/* ── Role hierarchy ── */
+.roles {
+  display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0;
+}
+
+.role-row {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: .75rem 1rem;
+}
+
+.role-emoji { font-size: 1.2rem; flex-shrink: 0; }
+.role-info { flex: 1; }
+.role-name { font-family: 'Cinzel', serif; font-size: .85rem; font-weight: 600; color: var(--text); }
+.role-desc { font-size: .82rem; color: var(--text-muted); margin-top: .1rem; }
+.role-id { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--text-muted); }
+
+/* ── Two col layout ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── Channel list ── */
+.channel-list { display: flex; flex-direction: column; gap: .4rem; margin: 1rem 0; }
+.channel-item {
+  display: flex; align-items: baseline; gap: .75rem;
+  padding: .5rem .75rem; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 6px;
+}
+.channel-name { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--gold); flex-shrink: 0; min-width: 200px; }
+.channel-desc { font-size: .85rem; color: var(--text-dim); }
+.channel-tag  { font-size: .7rem; color: var(--text-muted); font-style: italic; margin-left: auto; white-space: nowrap; }
+
+/* ── Env comparison ── */
+.env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+.env-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+.env-card.prod { border-color: rgba(46,125,82,.4); }
+.env-card.dev  { border-color: rgba(201,168,76,.3); }
+.env-card h4 { font-family: 'Cinzel', serif; font-size: .85rem; margin-bottom: .75rem; }
+.env-card.prod h4 { color: #5DBF8A; }
+.env-card.dev  h4 { color: var(--gold); }
+.env-card ul { list-style: none; padding: 0; }
+.env-card li { font-size: .88rem; color: var(--text-dim); padding: .25rem 0; display: flex; gap: .5rem; }
+.env-card li::before { content: '·'; color: var(--gold-dim); }
+
+/* ── TOC ── */
+.toc { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; }
+.toc h3 { font-family: 'Cinzel', serif; font-size: .85rem; color: var(--gold); margin-bottom: 1rem; }
+.toc ol { padding-left: 1.2rem; color: var(--text-dim); font-size: .9rem; }
+.toc li { margin-bottom: .3rem; }
+.toc a { color: var(--text-dim); text-decoration: none; }
+.toc a:hover { color: var(--gold); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center; padding: 3rem; color: var(--text-muted);
+  font-size: .8rem; border-top: 1px solid var(--border);
+}
+.footer .glyph { font-size: 1.5rem; display: block; margin-bottom: .5rem; opacity: .4; }
+
+/* ── Animations ── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.section { animation: fadeIn .4s ease both; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .hero { padding: 3rem 1.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .section { padding: 2.5rem 1.5rem; }
+  .env-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span class="emblem">𓂀</span>
+    <h2>Pharaonyx Bot</h2>
+    <p>Documentation v2.0</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Introduction</div>
+    <a class="nav-link" href="#overview"><span class="icon">🏛️</span> Vue d'ensemble</a>
+    <a class="nav-link" href="#architecture"><span class="icon">🏗️</span> Architecture</a>
+    <a class="nav-link" href="#installation"><span class="icon">⚙️</span> Installation</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Configuration</div>
+    <a class="nav-link" href="#roles"><span class="icon">🎖️</span> Rôles</a>
+    <a class="nav-link" href="#channels"><span class="icon">💬</span> Salons</a>
+    <a class="nav-link" href="#permissions"><span class="icon">🔐</span> Permissions</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Commandes</div>
+    <a class="nav-link" href="#cmd-general"><span class="icon">🌍</span> Général</a>
+    <a class="nav-link" href="#cmd-events"><span class="icon">📅</span> Événements</a>
+    <a class="nav-link" href="#cmd-polls"><span class="icon">📊</span> Sondages</a>
+    <a class="nav-link" href="#cmd-ranks"><span class="icon">🏆</span> Rangs</a>
+    <a class="nav-link" href="#cmd-moderation"><span class="icon">⚠️</span> Modération</a>
+    <a class="nav-link" href="#cmd-transfer"><span class="icon">↗️</span> Transferts</a>
+    <a class="nav-link" href="#cmd-admin"><span class="icon">⚙️</span> Administration</a>
+    <a class="nav-link" href="#cmd-superadmin"><span class="icon">👑</span> Super Admin</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Systèmes</div>
+    <a class="nav-link" href="#onboarding"><span class="icon">🚪</span> Onboarding</a>
+    <a class="nav-link" href="#xp"><span class="icon">⭐</span> XP & Classement</a>
+    <a class="nav-link" href="#translation"><span class="icon">🌐</span> Traduction</a>
+    <a class="nav-link" href="#blacklist"><span class="icon">🚫</span> Blacklist</a>
+    <a class="nav-link" href="#agenda"><span class="icon">🗓️</span> Agenda</a>
+    <a class="nav-link" href="#dirigeable"><span class="icon">🚢</span> Dirigeable</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Déploiement</div>
+    <a class="nav-link" href="#dev-prod"><span class="icon">🔄</span> DEV / PROD</a>
+    <a class="nav-link" href="#wispbyte"><span class="icon">☁️</span> Wispbyte</a>
+    <a class="nav-link" href="#data"><span class="icon">💾</span> Données JSON</a>
+    <a class="nav-link" href="#roadmap"><span class="icon">🗺️</span> Roadmap</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">𓂀 &nbsp; Pharaonyx [PYX] &nbsp; — &nbsp; Palmon Survival &nbsp; S178</div>
+  <h1>Pharaonyx Bot<br><span>Documentation Officielle</span></h1>
+  <p class="hero-desc">Bot Discord de gestion de guilde — v2.0 · Bilingue FR/EN · Hébergé sur Wispbyte</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="label">Version</span>
+      <span class="value">2.0.0</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Langage</span>
+      <span class="value">Python 3.11+</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Bibliothèque</span>
+      <span class="value">discord.py 2.4.0</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Hébergement</span>
+      <span class="value">Wispbyte (24h/24)</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Langues</span>
+      <span class="value">🇫🇷 🇬🇧</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OVERVIEW ══ -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <span class="section-number">01 — INTRODUCTION</span>
+    <h2>Vue d'ensemble</h2>
+  </div>
+
+  <p>Pharaonyx Bot est le compagnon officiel de la guilde <strong>Pharaonyx [PYX]</strong> sur Palmon Survival (Serveur 178). Il centralise la gestion des événements, des membres, des sondages, et bien plus — le tout en français et en anglais.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">Événements</div>
+      <div class="card-desc">Annonce boss, ruines, dirigeable et tempêtes. Agenda automatique avec timestamps Discord natifs.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <div class="card-title">Encyclopédie Palmon</div>
+      <div class="card-desc">Fiches Palmon avec builds, compétences et conseils. Création guidée sans redémarrage.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Sondages</div>
+      <div class="card-desc">Sondages interactifs (commun ou leader) avec timer natif, vote en temps réel et clôture auto.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Traduction Auto</div>
+      <div class="card-desc">Traduction FR↔EN automatique dans tous les chats. API MyMemory — 0 dépendance externe.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎖️</div>
+      <div class="card-title">Gestion des Rangs</div>
+      <div class="card-desc">Panneau de gestion des rangs R1→R5 avec logs dans #gestion. Permissions hiérarchiques.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⭐</div>
+      <div class="card-title">XP & Classement</div>
+      <div class="card-desc">Système d'XP par message, anti-spam, level-up automatique et top 15 membres actifs.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚫</div>
+      <div class="card-title">Blacklist</div>
+      <div class="card-desc">Système de blacklist avec bannissements fondés ou supposés, logs complets.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">↗️</div>
+      <div class="card-title">Transferts</div>
+      <div class="card-desc">Transfert silencieux de messages — ciblé, par quantité, ou historique complet.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ARCHITECTURE ══ -->
+<section class="section" id="architecture">
+  <div class="section-header">
+    <span class="section-number">02 — ARCHITECTURE</span>
+    <h2>Structure du projet</h2>
+  </div>
+
+  <pre><span class="comment"># Arborescence complète du projet</span>
+pharaonyx-bot/
+├── bot.py                    <span class="comment"># Point d'entrée principal</span>
+├── config.py                 <span class="comment"># Configuration centrale (IDs, tokens)</span>
+├── requirements.txt          <span class="comment"># discord.py==2.4.0 / python-dotenv==1.0.0</span>
+├── .env                      <span class="comment"># DISCORD_TOKEN=... (ne jamais partager)</span>
+├── cogs/
+│   ├── admin.py              <span class="comment"># /help /clear /clearall</span>
+│   ├── agenda.py             <span class="comment"># /agenda /agenda-add /agenda-remove</span>
+│   ├── blacklist.py          <span class="comment"># /blacklist-add /blacklist-list /blacklist-remove</span>
+│   ├── events.py             <span class="comment"># /boss /ruines /dirigeable /sandstorm /code-cadeau</span>
+│   ├── lang.py               <span class="comment"># /lang (menu FR/EN)</span>
+│   ├── palm.py               <span class="comment"># /palm /palm-create /palm-edit /palm-delete /palm-list</span>
+│   ├── roles.py              <span class="comment"># /rank /membres</span>
+│   ├── setup.py              <span class="comment"># /intro /intro-all /bot /tempete</span>
+│   ├── sondage.py            <span class="comment"># /sondage (commun | leader)</span>
+│   ├── stats.py              <span class="comment"># /stats</span>
+│   ├── transfert.py          <span class="comment"># /transfert /transfert-n /transfert-all</span>
+│   ├── translation.py        <span class="comment"># Traduction auto FR↔EN</span>
+│   ├── warn.py               <span class="comment"># /warn /warns /warn-remove /warn-clear</span>
+│   ├── welcome.py            <span class="comment"># Onboarding + arrivée/départ</span>
+│   └── xp.py                 <span class="comment"># /profil /classement + système XP</span>
+└── data/
+    ├── xp.json               <span class="comment"># XP des membres (auto-généré)</span>
+    ├── agenda.json           <span class="comment"># Événements à venir (auto-généré)</span>
+    ├── palmons.json          <span class="comment"># Encyclopédie Palmons (auto-généré)</span>
+    ├── warns.json            <span class="comment"># Avertissements (auto-généré)</span>
+    ├── blacklist.json        <span class="comment"># Blacklist guilde (auto-généré)</span>
+    └── dirlist.json          <span class="comment"># Liste joueurs dirigeable (auto-généré)</span></pre>
+</section>
+
+<!-- ══ INSTALLATION ══ -->
+<section class="section" id="installation">
+  <div class="section-header">
+    <span class="section-number">03 — INSTALLATION</span>
+    <h2>Installation & démarrage</h2>
+  </div>
+
+  <h3>Prérequis</h3>
+  <p>Python 3.11+ (Wispbyte) ou Python 3.13 (local avec <code>audioop-lts==0.2.2</code>)</p>
+
+  <h3>Dépendances</h3>
+  <pre><span class="comment"># requirements.txt</span>
+discord.py==2.4.0
+python-dotenv==1.0.0
+<span class="comment"># Sur Python 3.13 uniquement :</span>
+audioop-lts==0.2.2</pre>
+
+  <h3>Variables d'environnement</h3>
+  <pre><span class="comment"># .env</span>
+<span class="key">DISCORD_TOKEN</span>=<span class="str">votre_token_ici</span></pre>
+
+  <h3>Lancer le bot en local (DEV)</h3>
+  <pre><span class="comment"># PowerShell</span>
+cd "C:\Users\Antun\Desktop\Projets\Bot Discord\pharaonx-bot - DEV"
+.\venv\Scripts\Activate.ps1
+python bot.py</pre>
+
+  <h3>Déployer sur Wispbyte (PROD)</h3>
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span> Modifier fichiers en local</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> wispbyte.com → Files</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> Uploader les fichiers</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> Console → Reboot 🔄</div>
+  </div>
+</section>
+
+<!-- ══ ROLES ══ -->
+<section class="section" id="roles">
+  <div class="section-header">
+    <span class="section-number">04 — CONFIGURATION</span>
+    <h2>Rôles du serveur</h2>
+  </div>
+
+  <h3>Hiérarchie des rangs</h3>
+  <div class="roles">
+    <div class="role-row">
+      <span class="role-emoji">🏆</span>
+      <div class="role-info">
+        <div class="role-name">R5 — Chef de Guilde</div>
+        <div class="role-desc">Niveau maximum. Peut tout faire sur le bot. Reçoit les alertes de 3 warns.</div>
+      </div>
+      <div class="role-id">1487534435070119998</div>
+    </div>
+    <div class="role-row">
+      <span class="role-emoji">👑</span>
+      <div class="role-info">
+        <div class="role-name">R4 — Sous-Chef</div>
+        <div class="role-desc">Accès aux commandes d'événements, modération, sondages. Peut gérer R1→R3.</div>
+      </div>
+      <div class="role-id">1497529232090202232</div>
+    </div>
+    <div class="role-row">
+      <span class="role-emoji">🌟</span>
+      <div class="role-info">
+        <div class="role-name">R3 — Membre de Confiance</div>
+        <div class="role-desc">Accès aux commandes générales.</div>
+      </div>
+      <div class="role-id">1497529139010207804</div>
+    </div>
+    <div class="role-row">
+      <span class="role-emoji">🛡️</span>
+      <div class="role-info">
+        <div class="role-name">R2 — Membre Actif</div>
+        <div class="role-desc">Accès aux commandes générales.</div>
+      </div>
+      <div class="role-id">1497529084715073556</div>
+    </div>
+    <div class="role-row">
+      <span class="role-emoji">⚔️</span>
+      <div class="role-info">
+        <div class="role-name">R1 — Membre de Guilde</div>
+        <div class="role-desc">Rang de base attribué lors de l'onboarding.</div>
+      </div>
+      <div class="role-id">1487536541243937000</div>
+    </div>
+    <div class="role-row">
+      <span class="role-emoji">🌍</span>
+      <div class="role-info">
+        <div class="role-name">Voyageur</div>
+        <div class="role-desc">Membres non-guildes présents sur le serveur.</div>
+      </div>
+      <div class="role-id">1487557160547254513</div>
+    </div>
+  </div>
+
+  <h3>Rôles de langue</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-icon">🇫🇷</div>
+      <div class="card-title">Français (FRA)</div>
+      <div class="card-desc">ID : <code>1497528257023574017</code><br>Toutes les réponses du bot en français.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🇬🇧</div>
+      <div class="card-title">English (ENG)</div>
+      <div class="card-desc">ID : <code>1497528366847361064</code><br>All bot responses in English.</div>
+    </div>
+  </div>
+
+  <h3>Super Administrateurs</h3>
+  <p>Trois IDs ont accès aux commandes les plus sensibles (MP de masse, blacklist-remove) :</p>
+  <pre><span class="key">SUPER_ADMINS</span> = {
+    <span class="val">404729797567315981</span>,   <span class="comment"># Admin 1</span>
+    <span class="val">497825958116458502</span>,   <span class="comment"># Admin 2 (OWNER)</span>
+    <span class="val">1328511434824351799</span>,  <span class="comment"># Admin 3</span>
+}</pre>
+</section>
+
+<!-- ══ CHANNELS ══ -->
+<section class="section" id="channels">
+  <div class="section-header">
+    <span class="section-number">05 — SALONS</span>
+    <h2>Mapping des salons</h2>
+  </div>
+
+  <h3>Salons principaux</h3>
+  <div class="channel-list">
+    <div class="channel-item">
+      <span class="channel-name">#bienvenue</span>
+      <span class="channel-desc">Embed d'arrivée et de départ des membres.</span>
+      <span class="channel-tag">1487533055089578084</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#annonce</span>
+      <span class="channel-desc">Tous les embeds d'événements : boss, ruines, dirigeable, sandstorm.</span>
+      <span class="channel-tag">1487533106218008759</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#sondage-guilde</span>
+      <span class="channel-desc">Sondages communs accessibles à toute la guilde.</span>
+      <span class="channel-tag">1500156042049491197</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#vote-leader</span>
+      <span class="channel-desc">Sondages leaders — décisions importantes.</span>
+      <span class="channel-tag">1492149070720929866</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#gestion</span>
+      <span class="channel-desc">Log de toutes les actions importantes du bot (rangs, blacklist, événements…)</span>
+      <span class="channel-tag">1496619577923076106</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#blacklist</span>
+      <span class="channel-desc">Embeds de bannissement fondé ou supposé.</span>
+      <span class="channel-tag">1491475773905961002</span>
+    </div>
+    <div class="channel-item">
+      <span class="channel-name">#code-cadeau</span>
+      <span class="channel-desc">Codes cadeaux publiés via /code-cadeau.</span>
+      <span class="channel-tag">1487533233238184206</span>
+    </div>
+  </div>
+
+  <h3>Salons avec traduction automatique</h3>
+  <div class="channel-list">
+    <div class="channel-item"><span class="channel-name">#leader-chat</span><span class="channel-desc">Chat des leaders — trad auto FR↔EN</span></div>
+    <div class="channel-item"><span class="channel-name">#alliance</span><span class="channel-desc">Trad auto FR↔EN</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-general</span><span class="channel-desc">Trad auto FR↔EN</span></div>
+    <div class="channel-item"><span class="channel-name">#nsfw</span><span class="channel-desc">Trad auto FR↔EN</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-palmon</span><span class="channel-desc">Amélioration de palmon — trad auto</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-reproduction</span><span class="channel-desc">Reproduction palmon — trad auto</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-ruines</span><span class="channel-desc">Stratégies ruines — trad auto (affiché dans les annonces ruines)</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-sandstorm</span><span class="channel-desc">Stratégies tempête — trad auto (affiché dans les annonces sandstorm)</span></div>
+    <div class="channel-item"><span class="channel-name">#chat-dirigeable</span><span class="channel-desc">Dirigeable — trad auto (affiché dans les tirages)</span></div>
+  </div>
+</section>
+
+<!-- ══ PERMISSIONS ══ -->
+<section class="section" id="permissions">
+  <div class="section-header">
+    <span class="section-number">06 — PERMISSIONS</span>
+    <h2>Règles de permissions</h2>
+  </div>
+
+  <div class="cmd-table" style="width:100%">
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">Modifier le Discord</td>
+      <td class="cmd-desc">Propriétaire du serveur uniquement</td>
+      <td class="cmd-perm"><span class="perm perm-super">OWNER</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Commandes d'événements</td>
+      <td class="cmd-desc">Annonces boss, ruines, dirigeable, sandstorm, tempête</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Sondages</td>
+      <td class="cmd-desc">Création de sondages communs et leader</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Gestion des rangs</td>
+      <td class="cmd-desc">R4 peut gérer R1→R3 / R5 peut gérer R1→R4 / Super Admin peut tout</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Encyclopédie (créer/éditer)</td>
+      <td class="cmd-desc">Créer, éditer, supprimer des Palmons</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Modération</td>
+      <td class="cmd-desc">Warn, blacklist, clear, transfert</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">MP de masse / intro-all</td>
+      <td class="cmd-desc">Envoyer un message privé à tous les membres</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Blacklist-remove</td>
+      <td class="cmd-desc">Supprimer une entrée de la blacklist</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">Commandes générales</td>
+      <td class="cmd-desc">help, profil, classement, membres, agenda, stats, palm, sondage (lecture), bot</td>
+      <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+<!-- ══ COMMANDES GENERAL ══ -->
+<section class="section" id="cmd-general">
+  <div class="section-header">
+    <span class="section-number">07 — COMMANDES</span>
+    <h2>Commandes générales</h2>
+  </div>
+  <p>Accessibles à tous les membres (R1, R2, R3, R4, R5, Voyageur).</p>
+
+  <div class="cmd-group">
+    <table class="cmd-table" style="width:100%">
+      <tr>
+        <td class="cmd-name">/help</td>
+        <td class="cmd-desc">Affiche la liste des commandes disponibles filtrée selon le rang de l'utilisateur. Éphémère.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/bot</td>
+        <td class="cmd-desc">Présentation du bot et de ses fonctionnalités, dans la langue de l'utilisateur. Éphémère.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/lang</td>
+        <td class="cmd-desc">Change la langue préférée de l'utilisateur (Français ou English) via un menu déroulant.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/profil [@membre]</td>
+        <td class="cmd-desc">Affiche le profil XP, le niveau d'activité et les statistiques d'un membre. Éphémère.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/classement</td>
+        <td class="cmd-desc">Top 15 des membres les plus actifs basé sur les points XP accumulés.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/membres</td>
+        <td class="cmd-desc">Liste tous les membres du serveur triés par rang.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/agenda</td>
+        <td class="cmd-desc">Affiche les prochains événements de la guilde avec timestamps Discord natifs.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/stats</td>
+        <td class="cmd-desc">Statistiques globales de la guilde (membres par rang, total XP, etc.)</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/palm [nom]</td>
+        <td class="cmd-desc">Fiche détaillée d'un Palmon avec autocomplete en temps réel (3 lettres minimum).</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+      <tr>
+        <td class="cmd-name">/palm-list</td>
+        <td class="cmd-desc">Liste tous les Palmons triés par rôle → note → rareté, avec miniature photo.</td>
+        <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ══ COMMANDES EVENTS ══ -->
+<section class="section" id="cmd-events">
+  <div class="section-header">
+    <span class="section-number">08 — COMMANDES</span>
+    <h2>Commandes d'événements</h2>
+  </div>
+  <p>Les embeds sont tous publiés dans <code>#annonce</code>. Les salons de discussion dédiés sont mentionnés dans les embeds concernés.</p>
+
+  <div class="callout info">
+    <strong>💡 Salon de discussion</strong>
+    Les embeds de ruines, sandstorm et dirigeable affichent automatiquement un lien vers le salon de chat correspondant pour faciliter les échanges.
+  </div>
+
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">/boss [date] [heure]</td>
+      <td class="cmd-desc">Annonce le prochain boss de guilde. Embed bilingue publié dans <strong>#annonce</strong>. Ajout automatique à l'agenda.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/ruines [date] [heure]</td>
+      <td class="cmd-desc">Annonce les ruines. Menu pour choisir la zone (Ruine 1→7). Affiche <strong>#chat-ruines</strong> dans l'embed.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/dirigeable [date]</td>
+      <td class="cmd-desc">Lance le tirage du pilote. Animation d'élimination humoristique, rotation garantie. Affiche <strong>#chat-dirigeable</strong>.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/sandstorm [date] [heure]</td>
+      <td class="cmd-desc">Annonce la Tempête des Sables. Affiche <strong>#chat-sandstorm</strong> dans l'embed.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/tempete [date] [heure]</td>
+      <td class="cmd-desc">Annonce la tempête ET compose les équipes A/B via un menu de sélection des membres.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/dirigeable-add [pseudo]</td>
+      <td class="cmd-desc">Ajoute un joueur à la liste de tirage. Le pseudo peut être hors Discord (pas de mention requise).</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/dirigeable-remove [pseudo]</td>
+      <td class="cmd-desc">Retire un joueur de la liste de tirage par son pseudo exact.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/agenda-add [type] [date] [heure]</td>
+      <td class="cmd-desc">Ajout manuel d'un événement à l'agenda sans publier d'annonce.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/agenda-remove [type] [date]</td>
+      <td class="cmd-desc">Suppression manuelle d'un événement de l'agenda.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/code-cadeau [code] [desc] [expire]</td>
+      <td class="cmd-desc">Publie un embed soigné dans <strong>#code-cadeau</strong> avec le code, la récompense et la date d'expiration.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ══ COMMANDES SONDAGES ══ -->
+<section class="section" id="cmd-polls">
+  <div class="section-header">
+    <span class="section-number">09 — COMMANDES</span>
+    <h2>Sondages</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-icon">👥</div>
+      <div class="card-title">Sondage Commun</div>
+      <div class="card-desc">Posté dans <strong>#sondage-guilde</strong>. Accessible à toute la guilde. Couleur bleue.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">Sondage Leader</div>
+      <div class="card-desc">Posté dans <strong>#vote-leader</strong>. Pour les décisions importantes. Couleur or.</div>
+    </div>
+  </div>
+
+  <h3>Flux de création</h3>
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span> /sondage type:commun|leader</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> Modal : question + 2 choix + durée</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> Builder : jusqu'à 5 choix</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> ✅ Lancer → publié dans le bon salon</div>
+  </div>
+
+  <h3>Fonctionnalités</h3>
+  <ul style="color:var(--text-dim); padding-left:1.5rem; margin-top:.5rem;">
+    <li>Timer natif Discord <code>&lt;t:X:R&gt;</code> — compte à rebours en temps réel</li>
+    <li>Vote toggleable — re-cliquer retire le vote</li>
+    <li>Clôture manuelle (créateur ou R4/R5) ou automatique à l'expiration</li>
+    <li>Annonce du gagnant avec résultats finaux à la fermeture</li>
+    <li>Barres de progression en ASCII (<code>█░</code>)</li>
+  </ul>
+
+  <table class="cmd-table" style="width:100%;margin-top:1.5rem">
+    <tr>
+      <td class="cmd-name">/sondage type:[commun|leader]</td>
+      <td class="cmd-desc">Crée un sondage interactif. Le type détermine le salon de destination.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ══ COMMANDES RANGS ══ -->
+<section class="section" id="cmd-ranks">
+  <div class="section-header">
+    <span class="section-number">10 — COMMANDES</span>
+    <h2>Gestion des rangs</h2>
+  </div>
+
+  <div class="callout warn">
+    <strong>⚠️ Canal #gestion uniquement</strong>
+    Les commandes /rank doivent être utilisées dans le salon #gestion. Toutes les actions sont loguées automatiquement.
+  </div>
+
+  <table class="cmd-table" style="width:100%;margin-top:1rem">
+    <tr>
+      <td class="cmd-name">/rank [@membre]</td>
+      <td class="cmd-desc">Panneau ciblé pour modifier le rang d'un membre spécifique. Éphémère, avec embed public dans #gestion.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/rank</td>
+      <td class="cmd-desc">Panneau global avec récap par rang + menu déroulant pour sélectionner et modifier n'importe quel membre.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/membres</td>
+      <td class="cmd-desc">Liste complète des membres par rang avec compteurs.</td>
+      <td class="cmd-perm"><span class="perm perm-all">TOUS</span></td>
+    </tr>
+  </table>
+
+  <h3>Règles de gestion</h3>
+  <table class="cmd-table" style="width:100%">
+    <tr><td class="cmd-name" style="color:var(--text)">R4 — Sous-Chef</td><td class="cmd-desc">Peut gérer R1 → R3 uniquement</td></tr>
+    <tr><td class="cmd-name" style="color:var(--text)">R5 — Chef de Guilde</td><td class="cmd-desc">Peut gérer R1 → R4 inclus</td></tr>
+    <tr><td class="cmd-name" style="color:var(--text)">Super Admins</td><td class="cmd-desc">Peuvent tout gérer sans restriction</td></tr>
+  </table>
+</section>
+
+<!-- ══ COMMANDES MODÉRATION ══ -->
+<section class="section" id="cmd-moderation">
+  <div class="section-header">
+    <span class="section-number">11 — COMMANDES</span>
+    <h2>Modération</h2>
+  </div>
+
+  <h3>Avertissements</h3>
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">/warn @membre [raison]</td>
+      <td class="cmd-desc">Avertit un membre. Embed public + MP automatique au membre + alerte R5 au 3ème warn.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/warns [@membre]</td>
+      <td class="cmd-desc">Consulte les avertissements d'un membre (ou les siens si non précisé). Éphémère.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/warn-remove @membre [num]</td>
+      <td class="cmd-desc">Supprime un avertissement précis par son numéro.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/warn-clear @membre</td>
+      <td class="cmd-desc">Efface tous les avertissements d'un membre.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+  </table>
+
+  <h3>Blacklist</h3>
+  <div class="two-col" style="margin-bottom:1rem">
+    <div class="card" style="border-color:rgba(192,57,43,.4)">
+      <div class="card-icon">🔴</div>
+      <div class="card-title">Bannissement Fondé</div>
+      <div class="card-desc">Preuves solides. Embed rouge dans #blacklist. Mention explicite dans la fiche.</div>
+    </div>
+    <div class="card" style="border-color:rgba(212,98,42,.4)">
+      <div class="card-icon">🟠</div>
+      <div class="card-title">Bannissement Supposé</div>
+      <div class="card-desc">Suspicion ou en attente de confirmation. Embed orange. Peut être retiré si blanchi.</div>
+    </div>
+  </div>
+
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">/blacklist-add [nom] [raison] [type]</td>
+      <td class="cmd-desc">Ajoute un joueur à la blacklist. Embed dans #blacklist, log dans #gestion. Pseudo Discord ou en jeu.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/blacklist-list</td>
+      <td class="cmd-desc">Affiche les 20 dernières entrées. Les Super Admins ont un bouton de suppression directe.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/blacklist-remove [id]</td>
+      <td class="cmd-desc">Supprime une entrée de la blacklist par son ID. Log dans #gestion.</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ══ COMMANDES TRANSFERT ══ -->
+<section class="section" id="cmd-transfer">
+  <div class="section-header">
+    <span class="section-number">12 — COMMANDES</span>
+    <h2>Transferts de messages</h2>
+  </div>
+
+  <div class="callout">
+    <strong>🔇 Entièrement silencieux</strong>
+    Aucune notification envoyée à l'auteur du message original. La commande disparaît après utilisation. L'embed inclut l'auteur, la date d'origine et le salon source.
+  </div>
+
+  <table class="cmd-table" style="width:100%;margin-top:1rem">
+    <tr>
+      <td class="cmd-name">/transfert [salon]</td>
+      <td class="cmd-desc">Transfère le message auquel tu réponds. Fais une réponse Discord au message cible, puis lance la commande.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/transfert-n [salon] [nombre]</td>
+      <td class="cmd-desc">Transfère les N derniers messages du salon courant (max 200). Ordre chronologique préservé.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/transfert-all [salon]</td>
+      <td class="cmd-desc">Transfère tout l'historique du salon depuis le début. Pas de limite. Pause anti rate-limit automatique.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+  </table>
+
+  <h3>Comment utiliser /transfert</h3>
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span> Clic droit sur le message cible</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> "Répondre" — envoie la réponse</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> Tape /transfert + salon</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> Confirmation éphémère ✅</div>
+  </div>
+</section>
+
+<!-- ══ COMMANDES ADMIN ══ -->
+<section class="section" id="cmd-admin">
+  <div class="section-header">
+    <span class="section-number">13 — COMMANDES</span>
+    <h2>Administration générale</h2>
+  </div>
+
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">/clear [nombre]</td>
+      <td class="cmd-desc">Supprime N messages dans le salon courant (1–100). Avec confirmation.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/clearall</td>
+      <td class="cmd-desc">Supprime tous les messages du salon. Double confirmation par bouton.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/palm-create</td>
+      <td class="cmd-desc">Crée un nouveau Palmon via 3 modals interactifs (identité / compétences / description). Sans redémarrage.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/palm-edit [nom]</td>
+      <td class="cmd-desc">Édite les compétences et le build d'un Palmon existant.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/palm-delete [nom]</td>
+      <td class="cmd-desc">Supprime un Palmon de l'encyclopédie. Action irréversible.</td>
+      <td class="cmd-perm"><span class="perm perm-r4">R4+</span></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ══ COMMANDES SUPER ADMIN ══ -->
+<section class="section" id="cmd-superadmin">
+  <div class="section-header">
+    <span class="section-number">14 — COMMANDES</span>
+    <h2>Commandes Super Admin</h2>
+  </div>
+
+  <div class="callout warn">
+    <strong>⚠️ Accès restreint</strong>
+    Ces commandes sont réservées aux 3 IDs définis dans SUPER_ADMINS. Elles envoient des messages à tous les membres ou modifient des données sensibles.
+  </div>
+
+  <table class="cmd-table" style="width:100%;margin-top:1rem">
+    <tr>
+      <td class="cmd-name">/intro [@membre]</td>
+      <td class="cmd-desc">Envoie la présentation du bot en MP à un membre ciblé. Déclenche le flux d'onboarding complet.</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/intro-all</td>
+      <td class="cmd-desc">Envoie la présentation du bot en MP à tous les membres sans rôle langue. Anti rate-limit intégré (1.2s entre chaque MP).</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+    <tr>
+      <td class="cmd-name">/blacklist-remove [id]</td>
+      <td class="cmd-desc">Supprime une entrée de la blacklist. Log automatique dans #gestion.</td>
+      <td class="cmd-perm"><span class="perm perm-super">SUPER ADMIN</span></td>
+    </tr>
+  </table>
+</section>
+
+<!-- ══ ONBOARDING ══ -->
+<section class="section" id="onboarding">
+  <div class="section-header">
+    <span class="section-number">15 — SYSTÈMES</span>
+    <h2>Système d'onboarding</h2>
+  </div>
+
+  <p>Déclenchée automatiquement à l'arrivée d'un membre, ou manuellement via <code>/intro</code>. Toutes les interactions sont éphémères et protégées (seul le membre concerné peut interagir).</p>
+
+  <div class="flow" style="flex-direction:column; align-items:flex-start; gap:.75rem">
+    <div style="display:flex; align-items:center; gap:.75rem; width:100%">
+      <div class="flow-step" style="min-width:180px"><span class="num">1</span> Embed d'arrivée dans #bienvenue</div>
+      <span class="flow-arrow">→</span>
+      <span style="color:var(--text-dim);font-size:.9rem">Boutons langue 🇫🇷 / 🇬🇧 — attribution du rôle langue</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:.75rem; width:100%">
+      <div class="flow-step" style="min-width:180px"><span class="num">2</span> Choix du statut</div>
+      <span class="flow-arrow">→</span>
+      <span style="color:var(--text-dim);font-size:.9rem">🏛️ Membre de guilde <strong>OU</strong> 🌍 Voyageur</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:.75rem; width:100%">
+      <div class="flow-step" style="min-width:180px"><span class="num">3</span> Règlement</div>
+      <span class="flow-arrow">→</span>
+      <span style="color:var(--text-dim);font-size:.9rem">Embed doré (membre) ou bleu (voyageur) — bouton "J'accepte"</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:.75rem; width:100%">
+      <div class="flow-step" style="min-width:180px"><span class="num">4</span> Modal pseudo</div>
+      <span class="flow-arrow">→</span>
+      <span style="color:var(--text-dim);font-size:.9rem">Saisie du pseudo en jeu → nickname Discord mis à jour</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:.75rem; width:100%">
+      <div class="flow-step" style="min-width:180px"><span class="num">5</span> Attribution du rôle</div>
+      <span class="flow-arrow">→</span>
+      <span style="color:var(--text-dim);font-size:.9rem">R1 (Membre) ou Voyageur selon le choix — accès au serveur</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ XP ══ -->
+<section class="section" id="xp">
+  <div class="section-header">
+    <span class="section-number">16 — SYSTÈMES</span>
+    <h2>Système XP & Classement</h2>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3>Règles d'attribution</h3>
+      <table class="cmd-table" style="width:100%">
+        <tr><td class="cmd-name">Message envoyé</td><td class="cmd-desc">+10 XP</td></tr>
+        <tr><td class="cmd-name">Message &gt; 5 mots</td><td class="cmd-desc">+5 XP bonus</td></tr>
+        <tr><td class="cmd-name">Cooldown anti-spam</td><td class="cmd-desc">60 secondes entre deux gains</td></tr>
+        <tr><td class="cmd-name">Level up</td><td class="cmd-desc">Annonce dans le salon (disparaît après 30s)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Commandes</h3>
+      <table class="cmd-table" style="width:100%">
+        <tr><td class="cmd-name">/profil [@m]</td><td class="cmd-desc">XP, niveau, rang d'activité</td></tr>
+        <tr><td class="cmd-name">/classement</td><td class="cmd-desc">Top 15 membres les plus actifs</td></tr>
+        <tr><td class="cmd-name">/stats</td><td class="cmd-desc">Statistiques globales du serveur</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p style="margin-top:1rem">Les données XP sont stockées dans <code>data/xp.json</code> et persistent entre les redémarrages.</p>
+</section>
+
+<!-- ══ TRADUCTION ══ -->
+<section class="section" id="translation">
+  <div class="section-header">
+    <span class="section-number">17 — SYSTÈMES</span>
+    <h2>Traduction automatique</h2>
+  </div>
+
+  <p>Traduction automatique FR↔EN utilisant l'API <strong>MyMemory</strong> (gratuit, sans clé API, via <code>urllib</code> natif Python).</p>
+
+  <h3>Salons concernés</h3>
+  <p>La traduction est active dans tous les salons de chat : <code>#leader-chat</code>, <code>#alliance</code>, <code>#chat-general</code>, <code>#nsfw</code>, <code>#chat-palmon</code>, <code>#chat-reproduction</code>, <code>#chat-ruines</code>, <code>#chat-sandstorm</code>, <code>#chat-dirigeable</code>.</p>
+
+  <h3>Fonctionnement</h3>
+  <table class="cmd-table" style="width:100%">
+    <tr><td class="cmd-name">Détection de langue</td><td class="cmd-desc">Analyse des mots communs + caractères spéciaux FR. Fallback = français.</td></tr>
+    <tr><td class="cmd-name">Limite journalière</td><td class="cmd-desc">900 requêtes/jour. Au-delà, bouton manuel "🌐 Traduire" proposé.</td></tr>
+    <tr><td class="cmd-name">Longueur max</td><td class="cmd-desc">500 caractères par requête (tronqué si nécessaire).</td></tr>
+    <tr><td class="cmd-name">Messages ignorés</td><td class="cmd-desc">Messages de bots, liens seuls, textes &lt; 5 caractères.</td></tr>
+  </table>
+</section>
+
+<!-- ══ BLACKLIST ══ -->
+<section class="section" id="blacklist">
+  <div class="section-header">
+    <span class="section-number">18 — SYSTÈMES</span>
+    <h2>Système de Blacklist</h2>
+  </div>
+
+  <p>Chaque entrée de blacklist contient : pseudo, pseudo en jeu (optionnel), mention Discord (optionnel), raison, type de bannissement, auteur et horodatage.</p>
+
+  <pre><span class="comment"># Structure d'une entrée blacklist.json</span>
+{
+  <span class="key">"id"</span>:            <span class="val">1</span>,
+  <span class="key">"nom"</span>:           <span class="str">"NomDuJoueur"</span>,
+  <span class="key">"pseudo_ingame"</span>: <span class="str">"PseudoEnJeu"</span>,
+  <span class="key">"discord_id"</span>:    <span class="val">123456789012345678</span>,
+  <span class="key">"discord_tag"</span>:   <span class="str">"user#0000"</span>,
+  <span class="key">"raison"</span>:        <span class="str">"Raison du bannissement"</span>,
+  <span class="key">"type"</span>:          <span class="str">"fonde"</span>,   <span class="comment">// ou "suppose"</span>
+  <span class="key">"added_by"</span>:      <span class="str">"NomAdmin"</span>,
+  <span class="key">"timestamp"</span>:     <span class="val">1714660800</span>
+}</pre>
+
+  <div class="callout">
+    <strong>📍 Logs automatiques</strong>
+    Chaque ajout et suppression d'une entrée est automatiquement loggé dans <strong>#gestion</strong> avec le nom de l'administrateur ayant effectué l'action.
+  </div>
+</section>
+
+<!-- ══ AGENDA ══ -->
+<section class="section" id="agenda">
+  <div class="section-header">
+    <span class="section-number">19 — SYSTÈMES</span>
+    <h2>Agenda automatique</h2>
+  </div>
+
+  <p>L'agenda est alimenté automatiquement par chaque commande d'événement. Il utilise les timestamps Discord natifs pour afficher les heures dans le fuseau local de chaque joueur.</p>
+
+  <h3>Nettoyage automatique</h3>
+  <p>Les événements passés depuis plus de <strong>48 heures</strong> sont supprimés automatiquement toutes les heures. Le nettoyage est aussi déclenché à chaque appel de <code>/agenda</code>.</p>
+
+  <table class="cmd-table" style="width:100%">
+    <tr><td class="cmd-name">/agenda</td><td class="cmd-desc">Affiche les prochains événements triés par date.</td></tr>
+    <tr><td class="cmd-name">/agenda-add [type] [date] [heure]</td><td class="cmd-desc">Ajoute manuellement un événement (boss, ruines, dirigeable, tempete).</td></tr>
+    <tr><td class="cmd-name">/agenda-remove [type] [date]</td><td class="cmd-desc">Supprime manuellement un événement.</td></tr>
+  </table>
+</section>
+
+<!-- ══ DIRIGEABLE ══ -->
+<section class="section" id="dirigeable">
+  <div class="section-header">
+    <span class="section-number">20 — SYSTÈMES</span>
+    <h2>Tirage Dirigeable</h2>
+  </div>
+
+  <p>Le tirage du pilote garantit une <strong>rotation équitable</strong> — un joueur ne repasse pas tant que toute la liste n'a pas joué.</p>
+
+  <div class="callout info">
+    <strong>💡 Joueurs hors Discord</strong>
+    La liste dirigeable stocke des pseudos textuels. Les membres n'ont pas besoin d'être sur Discord — utile pour les joueurs qui participent en jeu uniquement.
+  </div>
+
+  <h3>Algorithme de rotation</h3>
+  <ol style="color:var(--text-dim); padding-left:1.5rem; margin-top:.5rem; line-height:2">
+    <li>Tirage aléatoire parmi les joueurs du <em>cycle courant</em> (non encore sélectionnés)</li>
+    <li>Le joueur tiré est retiré du cycle courant</li>
+    <li>Quand le cycle est vide → nouveau cycle avec tous les joueurs (sauf le dernier pilote)</li>
+    <li>Animation d'élimination humoristique pour tous les non-sélectionnés</li>
+  </ol>
+</section>
+
+<!-- ══ DEV PROD ══ -->
+<section class="section" id="dev-prod">
+  <div class="section-header">
+    <span class="section-number">21 — DÉPLOIEMENT</span>
+    <h2>Environnements DEV / PROD</h2>
+  </div>
+
+  <div class="env-grid">
+    <div class="env-card prod">
+      <h4>🟢 PRODUCTION</h4>
+      <ul>
+        <li>Dossier : <code>pharaonx-bot</code></li>
+        <li>Hébergement : Wispbyte (24h/24)</li>
+        <li>Commandes : <code>/slash</code> globales</li>
+        <li>Python : 3.11</li>
+        <li>Tous les listeners actifs</li>
+        <li>Sync slash commands au démarrage</li>
+      </ul>
+    </div>
+    <div class="env-card dev">
+      <h4>🟡 DÉVELOPPEMENT</h4>
+      <ul>
+        <li>Dossier : <code>pharaonx-bot - DEV</code></li>
+        <li>Hébergement : PC local</li>
+        <li>Commandes : <code>$préfixe</code> + <code>/slash</code> guild-only</li>
+        <li>Python : 3.13 + audioop-lts</li>
+        <li>XP, traduction, welcome désactivés</li>
+        <li>Slash visibles R4 uniquement</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn" style="margin-top:1.5rem">
+    <strong>⚠️ Règle de développement</strong>
+    Modifier uniquement le dossier DEV sauf instruction explicite "pousse en prod". Tester → valider → copier vers PROD → uploader sur Wispbyte → Reboot.
+  </div>
+</section>
+
+<!-- ══ WISPBYTE ══ -->
+<section class="section" id="wispbyte">
+  <div class="section-header">
+    <span class="section-number">22 — DÉPLOIEMENT</span>
+    <h2>Hébergement Wispbyte</h2>
+  </div>
+
+  <h3>Procédure de mise à jour</h3>
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span> Modifier fichiers en local (PROD)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">2</span> wispbyte.com → son projet</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">3</span> Files → Upload/remplacer</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><span class="num">4</span> Console → Bouton 🔄 Reboot</div>
+  </div>
+
+  <div class="callout info" style="margin-top:1rem">
+    <strong>ℹ️ Bouton Reboot vs Kill</strong>
+    Utiliser le bouton <strong>Reboot (🔄)</strong> — il redémarre proprement le bot avec les nouveaux fichiers. Ne pas utiliser <strong>Kill</strong> qui coupe brutalement.
+  </div>
+
+  <h3>Configuration Wispbyte</h3>
+  <table class="cmd-table" style="width:100%">
+    <tr><td class="cmd-name">Python version</td><td class="cmd-desc">3.11.x</td></tr>
+    <tr><td class="cmd-name">Startup file</td><td class="cmd-desc">bot.py</td></tr>
+    <tr><td class="cmd-name">Requirements</td><td class="cmd-desc">requirements.txt (discord.py==2.4.0, python-dotenv==1.0.0)</td></tr>
+    <tr><td class="cmd-name">Variable ENV</td><td class="cmd-desc">DISCORD_TOKEN configuré dans les variables d'environnement Wispbyte</td></tr>
+  </table>
+</section>
+
+<!-- ══ DATA ══ -->
+<section class="section" id="data">
+  <div class="section-header">
+    <span class="section-number">23 — DONNÉES</span>
+    <h2>Stockage des données (JSON)</h2>
+  </div>
+
+  <p>Toutes les données sont stockées en JSON local dans le dossier <code>data/</code>. Les fichiers sont créés automatiquement au premier usage.</p>
+
+  <table class="cmd-table" style="width:100%">
+    <tr>
+      <td class="cmd-name">data/xp.json</td>
+      <td class="cmd-desc">Points XP et niveau de chaque membre. Clé = ID Discord (string).</td>
+    </tr>
+    <tr>
+      <td class="cmd-name">data/agenda.json</td>
+      <td class="cmd-desc">Liste des événements à venir. Nettoyage auto des entrées &gt;48h.</td>
+    </tr>
+    <tr>
+      <td class="cmd-name">data/palmons.json</td>
+      <td class="cmd-desc">Encyclopédie Palmons avec tous les champs bilingues FR/EN.</td>
+    </tr>
+    <tr>
+      <td class="cmd-name">data/warns.json</td>
+      <td class="cmd-desc">Avertissements par membre. Clé = ID Discord (string), valeur = liste de warns.</td>
+    </tr>
+    <tr>
+      <td class="cmd-name">data/blacklist.json</td>
+      <td class="cmd-desc">Liste des joueurs bannis avec toutes les métadonnées.</td>
+    </tr>
+    <tr>
+      <td class="cmd-name">data/dirlist.json</td>
+      <td class="cmd-desc">Liste de joueurs dirigeable + cycle de rotation courant + historique des 100 derniers tirages.</td>
+    </tr>
+  </table>
+
+  <h3>Format Palmon</h3>
+  <pre><span class="comment"># Structure d'un palmon dans palmons.json</span>
+{
+  <span class="key">"id"</span>:            <span class="val">1</span>,
+  <span class="key">"name_fra"</span>:      <span class="str">"Ninjump"</span>,   <span class="key">"name_eng"</span>:   <span class="str">"Ninjump"</span>,
+  <span class="key">"type_fra"</span>:      <span class="str">"Feu"</span>,       <span class="key">"type_eng"</span>:   <span class="str">"Fire"</span>,
+  <span class="key">"rarity_fra"</span>:    <span class="str">"UR"</span>,        <span class="key">"rarity_eng"</span>: <span class="str">"UR"</span>,
+  <span class="key">"role_fra"</span>:      <span class="str">"Attaquant"</span>, <span class="key">"role_eng"</span>:   <span class="str">"Attacker"</span>,
+  <span class="key">"note"</span>:          <span class="val">8</span>,
+  <span class="key">"skills_fra"</span>:    <span class="str">"**Frappe** — 🔴 Prioritaire"</span>,
+  <span class="key">"strength_fra"</span>:  <span class="str">"Excellent en PvP"</span>,
+  <span class="key">"weakness_fra"</span>:  <span class="str">"Fragile en défense"</span>,
+  <span class="key">"image_url"</span>:     <span class="str">"https://i.imgur.com/..."</span>
+}</pre>
+</section>
+
+<!-- ══ ROADMAP ══ -->
+<section class="section" id="roadmap">
+  <div class="section-header">
+    <span class="section-number">24 — ROADMAP</span>
+    <h2>Roadmap & évolutions</h2>
+  </div>
+
+  <h3>✅ Réalisé (v2.0)</h3>
+  <div class="cards">
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Onboarding complet</div><div class="card-desc">Langue → Statut → Règlement → Pseudo → Rôle</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Encyclopédie Palmon</div><div class="card-desc">Création guidée, tri, autocomplete, bilingue</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Avertissements</div><div class="card-desc">MP auto, alerte R5 au 3ème warn</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Blacklist</div><div class="card-desc">Fondé / supposé, logs complets</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Sondages Lead/Commun</div><div class="card-desc">Routage automatique selon le type</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Transferts 3 modes</div><div class="card-desc">Ciblé, quantité, historique complet</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Code Cadeaux</div><div class="card-desc">Embed dans #code-cadeau</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-title">Mapping complet v2</div><div class="card-desc">Tous les salons et rôles remappés</div></div>
+  </div>
+
+  <h3>🔜 Priorité haute</h3>
+  <div class="cards">
+    <div class="card"><div class="card-icon">🔜</div><div class="card-title">/item [nom]</div><div class="card-desc">Encyclopédie des objets — même système que /palm</div></div>
+    <div class="card"><div class="card-icon">🔜</div><div class="card-title">Rotation R1 auto</div><div class="card-desc">Membres inactifs X jours → passage R1 automatique</div></div>
+  </div>
+
+  <h3>📋 Priorité moyenne</h3>
+  <div class="cards">
+    <div class="card"><div class="card-icon">📋</div><div class="card-title">Rappels automatiques</div><div class="card-desc">Ping 30min avant boss/ruines annoncés</div></div>
+    <div class="card"><div class="card-icon">📋</div><div class="card-title">/note [texte]</div><div class="card-desc">Notes personnelles par membre</div></div>
+    <div class="card"><div class="card-icon">📋</div><div class="card-title">Classement mensuel</div><div class="card-desc">Reset XP mensuel avec archivage</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="glyph">𓂀</span>
+  <strong>Pharaonyx Bot</strong> — Documentation v2.0<br>
+  Guilde Pharaonyx [PYX] · Palmon Survival · Serveur 178<br>
+  <span style="opacity:.5">Généré automatiquement · discord.py 2.4.0 · Python 3.11+</span>
+</footer>
+
+</main>
+
+<script>
+// Active nav link on scroll
+const sections = document.querySelectorAll('.section, .hero');
+const navLinks  = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const id = e.target.id;
+      if (id) {
+        const active = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => observer.observe(s));
+
+// Smooth reveal on scroll
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.style.opacity = '1';
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.section').forEach(s => {
+  s.style.opacity = '0';
+  s.style.transition = 'opacity .5s ease';
+  revealObserver.observe(s);
+});
+</script>
+</body>
+</html>
